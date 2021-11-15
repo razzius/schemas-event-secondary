@@ -1,0 +1,74 @@
+title: analytics/presto_query
+description: |
+  Capture presto query statistics
+$id: /analytics/presto_query/1.0.0
+$schema: 'https://json-schema.org/draft-07/schema#'
+type: object
+additionalProperties: false
+required:
+  - $schema
+  - meta
+  - query_id
+  - query_dt
+properties:
+  $schema:
+    description: >
+      A URI identifying the JSONSchema for this event. This should match an
+      schema's $id in a schema repository. E.g. /schema/title/1.0.0
+    type: string
+  meta:
+    type: object
+    required:
+      - dt
+      - stream
+    properties:
+      uri:
+        type: string
+        format: uri-reference
+        maxLength: 8192
+        description: Unique URI identifying the event or entity
+      request_id:
+        description: Unique ID of the request that caused the event
+        type: string
+      id:
+        description: Unique ID of this event
+        type: string
+      dt:
+        type: string
+        format: date-time
+        maxLength: 128
+        description: 'UTC event datetime, in ISO-8601 format'
+      domain:
+        description: Domain the event or entity pertains to
+        type: string
+        minLength: 1
+      stream:
+        description: Name of the stream/queue/dataset that this event belongs in
+        type: string
+        minLength: 1
+  query_id:
+    type: string
+    minLength: 24
+    maxLength: 36
+    pattern: >-
+      ^[0-9]{8}-[0-9]{6}-[0-9]{5}-[0-9a-fA-F]{4-8}$
+    description: >
+      Presto query id
+  query_dt:
+    type: string
+    format: date-time
+    maxLength: 128
+    description: 'UTC event datetime, in ISO-8601 format'
+examples:
+  - $schema: /analytics/presto_query/1.0.0
+    meta:
+      stream: test.analytics.presto_query
+      dt: '2021-11-15T19:20:00.649Z'
+    query_id: '20211115_182714_00735_6jgh8'
+    query_dt: '2021-11-15T19:20:00.649Z'
+  - $schema: /analytics/presto_query/1.0.0
+    meta:
+      stream: test-2.analytics.presto_query
+      dt: '2021-11-15T19:21:00.649Z'
+    query_id: '20211115_182714_00036_6jgh8'
+    query_dt: '2021-11-15T19:21:00.679Z'
